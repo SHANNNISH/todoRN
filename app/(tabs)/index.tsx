@@ -1,5 +1,6 @@
 import { ITodo } from "@/types"; // Проверь, чтобы путь был верным
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import {
     FlatList,
     Keyboard,
@@ -34,6 +35,33 @@ export default function App() {
     setTask("");
   };
 
+  //   при старте
+  useEffect(() => {
+    const loadTodos = async () => {
+      try {
+        const savedTodos = await AsyncStorage.getItem("@todos_key");
+        if (savedTodos !== null) {
+          setTodos(JSON.parse(savedTodos));
+        }
+      } catch (e) {
+        console.log("Failed to load data");
+      }
+    };
+    loadTodos();
+  }, []);
+
+  useEffect(() => {
+    const saveTodos = async () => {
+      try {
+        const jsonValue = JSON.stringify(todos);
+        await AsyncStorage.setItem("@todos_key", jsonValue);
+      } catch (e) {
+        console.log("Failed to save data");
+      }
+    };
+    saveTodos();
+  }, [todos]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>My Dev Tasks</Text>
@@ -66,7 +94,7 @@ export default function App() {
           value={task}
           onChangeText={setTask}
         />
-        {/* 2. ПРИВЯЗЫВАЕМ ФУНКЦИЮ */}
+
         <TouchableOpacity style={styles.addBtn} onPress={addTask}>
           <Text style={styles.addBtnText}>+</Text>
         </TouchableOpacity>
