@@ -1,37 +1,51 @@
+import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import React from "react";
-
-import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { Platform } from "react-native";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
+        // 1. Цвета: Неоновый синий на глубоком черном
+        tabBarActiveTintColor: "#fffb00",
+        tabBarInactiveTintColor: "#636366",
+
+        // 2. Нижняя панель
+        tabBarStyle: {
+          backgroundColor: "#000000", // Истинный черный
+          borderTopWidth: 1,
+          borderTopColor: "#1C1C1E", // Едва заметная граница
+          height: Platform.OS === "ios" ? 88 : 70,
+          paddingBottom: Platform.OS === "ios" ? 30 : 12,
+        },
+
+        // 3. Шапка (Header)
+        headerStyle: {
+          backgroundColor: "#000000",
+        },
+        headerTitleStyle: {
+          fontWeight: "900",
+          fontSize: 22,
+          color: "#FFFFFF",
+        },
+        headerShadowVisible: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Tasks",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <FontAwesome name="check-square" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="market"
         options={{
-          title: "Explore",
+          title: "Market",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <FontAwesome name="line-chart" size={24} color={color} />
           ),
         }}
       />

@@ -6,3 +6,9 @@ export interface ITodo {
   isDone: boolean;
   priority: Priority;
 }
+
+export interface WeatherData {
+  temp: number;
+  desc: string;
+  city: string;
+}
