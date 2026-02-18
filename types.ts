@@ -12,3 +12,8 @@ export interface WeatherData {
   desc: string;
   city: string;
 }
+
+export interface AppState {
+  lastCity: string;
+  setLastCity: (city: string) => void;
+}

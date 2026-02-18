@@ -19,6 +19,7 @@ export default function WeatherScreen() {
   const API_KEY = "98ea1fa633f83f3d7565c7c8d9a457d5";
 
   const fetchWeather = () => {
+    setData(null);
     setLoading(true);
     setError(null);
 
@@ -27,27 +28,25 @@ export default function WeatherScreen() {
     fetch(url)
       .then((res) => {
         if (!res.ok) {
-          // Если 401 - ключ еще не активировался (нужно подождать 30-60 мин)
-          // Если 404 - город не найден
           throw new Error(`Ошибка: ${res.status}`);
         }
         return res.json();
       })
       .then((json) => {
-        console.log("ПОГОДА ПРИШЛА:", json);
         setData({
           temp: json.main.temp,
           desc: json.weather[0].description,
           city: json.name,
         });
-        setLoading(false);
       })
       .catch((err) => {
         if (err.message === "Ошибка: 401") {
           setError("Что-то пошло не так");
+        } else {
+          setError("Ошибка сети");
         }
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function WeatherScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Minsk Weather</Text>
+      <Text style={styles.title}>{lastCity} Weather</Text>
 
       {error ? (
         <View style={styles.card}>
@@ -80,14 +79,13 @@ export default function WeatherScreen() {
         </View>
       ) : (
         <View style={styles.card}>
-          {/* Отображаем градусы */}
-          {data && <Text style={styles.temp}>{Math.round(data.temp)}°C</Text>}
-
-          {/* Описание погоды */}
-          <Text style={styles.desc}>{data?.desc}</Text>
-
-          {/* Название города */}
-          <Text style={styles.city}>{data?.city}</Text>
+          {data && (
+            <>
+              <Text style={styles.temp}>{data.temp}°C</Text>
+              <Text style={styles.desc}>{data.desc}</Text>
+              <Text style={styles.city}>{data.city}</Text>
+            </>
+          )}
         </View>
       )}
     </View>

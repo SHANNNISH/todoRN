@@ -12,7 +12,7 @@ export default function TabLayout() {
 
         // 2. Нижняя панель
         tabBarStyle: {
-          backgroundColor: "#000000", // Истинный черный
+          backgroundColor: "#000000",
           borderTopWidth: 1,
           borderTopColor: "#1C1C1E", // Едва заметная граница
           height: Platform.OS === "ios" ? 88 : 70,

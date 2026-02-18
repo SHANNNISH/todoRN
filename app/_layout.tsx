@@ -6,7 +6,6 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* ОБЯЗАТЕЛЬНО: Stack должен быть здесь! */}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
       </Stack>
